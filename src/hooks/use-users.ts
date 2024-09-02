@@ -1,13 +1,18 @@
 import { useCallback, useState } from "react";
 
 import { ErrorType } from "../types/common.ts";
-import { usersApi, UserType } from "../api/task-tracker-api.ts";
+import {
+  SetRoleRequestType,
+  usersApi,
+  UserType,
+} from "../api/task-tracker-api.ts";
 
 export function useUsers(): {
   loading: boolean;
   error: ErrorType<"none" | "common">;
   users: UserType[];
   getUsers: () => void;
+  setRoleToUser: (data: SetRoleRequestType) => void;
   clearError: () => void;
 } {
   const [loading, setLoading] = useState<boolean>(false);
@@ -35,6 +40,21 @@ export function useUsers(): {
       .finally(() => setLoading(false));
   }, []);
 
+  const setRoleToUser = useCallback((data: SetRoleRequestType) => {
+    setLoading(true);
+    usersApi
+      .setRoleToUser(data)
+      .then((res) => {})
+      .catch((e) => {
+        setError({
+          isActive: true,
+          value: e.response.data.message,
+          type: "common",
+        });
+      })
+      .finally(() => setLoading(false));
+  }, []);
+
   const clearError = useCallback(() => {
     setError({ isActive: false, type: "none", value: "" });
   }, []);
@@ -42,6 +62,7 @@ export function useUsers(): {
   return {
     users,
     getUsers,
+    setRoleToUser,
     loading,
     error,
     clearError,

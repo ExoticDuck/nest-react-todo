@@ -1,7 +1,7 @@
 export enum ROUTES {
   REGISTRATION = "/registration",
   TASK_LIST = "/tasks",
-  TASK_TABLE = "/task-table",
+  ROLE_SERVICE = "/role-service",
   LOGIN = "/login",
   INDEX = "/",
 }

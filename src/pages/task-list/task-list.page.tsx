@@ -87,8 +87,15 @@ const Scroll = styled.div({
   gap: 10,
 });
 const TaskList: React.FC = () => {
-  const { getTasks, updateTask, createTask, deleteTask, filterTasks, tasks } =
-    useTasks();
+  const {
+    getTasks,
+    getAllTasks,
+    updateTask,
+    createTask,
+    deleteTask,
+    filterTasks,
+    tasks,
+  } = useTasks();
   const [isUpdateModalActive, setIsUpdateModalActive] =
     useState<boolean>(false);
   const [isCreateModalActive, setIsCreateModalActive] =
@@ -96,6 +103,16 @@ const TaskList: React.FC = () => {
   const [isFilterModalActive, setIsFilterModalActive] =
     useState<boolean>(false);
   const [selectedTask, setSelectedTask] = useState<TaskObjType | null>(null);
+  const role = localStorage.getItem("role");
+  const userId = localStorage.getItem("userId");
+
+  const fetchTasksByRole = useCallback(() => {
+    if (role === "ROLE_USER") {
+      getTasks();
+    } else if (role === "ROLE_ADMIN") {
+      getAllTasks();
+    }
+  }, [role]);
 
   const handleOpenTask = useCallback((task: TaskObjType) => {
     setIsUpdateModalActive(true);
@@ -116,35 +133,40 @@ const TaskList: React.FC = () => {
 
   const handleCompleteTask = useCallback((data: UpdateTaskRequestType) => {
     updateTask({ id: data.id, progress: 100, status: "Завершена" });
-    getTasks();
+    fetchTasksByRole();
     setIsUpdateModalActive(false);
   }, []);
 
   const handleCreateTask = useCallback((data: CreateTaskRequestType) => {
     createTask({ ...data });
-    getTasks();
+    fetchTasksByRole();
     setIsCreateModalActive(false);
   }, []);
 
   const handleFilterTasks = useCallback((data: FilterTasksRequestType) => {
     filterTasks({ ...data });
-    // getTasks();
     setIsFilterModalActive(false);
   }, []);
 
   const handleUpdate = useCallback((data: UpdateTaskRequestType) => {
     updateTask({ ...data });
-    getTasks();
+    fetchTasksByRole();
     setIsUpdateModalActive(false);
   }, []);
 
   const handleDeleteTask = useCallback((taskId: number) => {
     deleteTask(taskId);
-    getTasks();
+    fetchTasksByRole();
+  }, []);
+  const getUserName = useCallback((executor: { id: number; email: string }) => {
+    if (userId && userId === executor.id.toString()) {
+      return "Вы";
+    }
+    return executor.email;
   }, []);
 
   useEffect(() => {
-    getTasks();
+    fetchTasksByRole();
   }, []);
   return (
     <Page>
@@ -162,6 +184,7 @@ const TaskList: React.FC = () => {
               <Button
                 variant="PRIMARY"
                 onClick={() => setIsCreateModalActive(true)}
+                disabled={role === "ROLE_USER"}
               >
                 Создать задачу
               </Button>
@@ -184,8 +207,9 @@ const TaskList: React.FC = () => {
                     <Type type={task.type}>
                       <H4>{task.type}</H4>
                     </Type>
+
                     <Executor>
-                      <H4>Вы</H4>
+                      {task.executor && <H4>{getUserName(task.executor)}</H4>}
                     </Executor>
                     <Progress progress={task.progress}>
                       <H4>{task.progress}%</H4>
@@ -200,6 +224,7 @@ const TaskList: React.FC = () => {
                 </Task>
               );
             })}
+          {!tasks.length && <H1>Задач нет.</H1>}
         </Scroll>
 
         {selectedTask && isUpdateModalActive && (

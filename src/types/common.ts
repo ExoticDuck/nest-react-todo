@@ -17,4 +17,8 @@ export type Token = {
   exp: number;
   iat: number;
   id: number;
+  roles: {
+    id: number;
+    value: "ROLE_USER" | "ROLE_ADMIN";
+  }[];
 };

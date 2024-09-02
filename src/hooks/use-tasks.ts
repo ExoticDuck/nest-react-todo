@@ -17,6 +17,7 @@ export function useTasks(): {
   deleteTask: (taskId: number) => void;
   tasks: TaskObjType[];
   getTasks: () => void;
+  getAllTasks: () => void;
   clearError: () => void;
 } {
   const [loading, setLoading] = useState<boolean>(false);
@@ -31,6 +32,22 @@ export function useTasks(): {
     setLoading(true);
     tasksApi
       .getTasks()
+      .then((res) => {
+        setTasks(res.data);
+      })
+      .catch((e) => {
+        setTaskError({
+          isActive: true,
+          value: e.response.data.message,
+          type: "none",
+        });
+      })
+      .finally(() => setLoading(false));
+  }, []);
+  const getAllTasks = useCallback(() => {
+    setLoading(true);
+    tasksApi
+      .getAllTasks()
       .then((res) => {
         setTasks(res.data);
       })
@@ -108,6 +125,7 @@ export function useTasks(): {
 
   return {
     getTasks,
+    getAllTasks,
     updateTask,
     createTask,
     deleteTask,

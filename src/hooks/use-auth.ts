@@ -31,7 +31,8 @@ export function useAuth(): {
         localStorage.setItem("token", res.data.token);
         const decodedToken: Token = jwtDecode(res.data.token);
         localStorage.setItem("userId", decodedToken.id.toString());
-        navigate(ROUTES.TASK_LIST);
+        localStorage.setItem("role", decodedToken.roles[0].value);
+        navigate(ROUTES.LOGIN);
       })
       .catch((e) => {
         setAuthError({
@@ -50,7 +51,8 @@ export function useAuth(): {
         localStorage.setItem("token", res.data.token);
         const decodedToken: Token = jwtDecode(res.data.token);
         localStorage.setItem("userId", decodedToken.id.toString());
-        navigate("/tasks");
+        localStorage.setItem("role", decodedToken.roles[0].value);
+        navigate(ROUTES.TASK_LIST);
       })
       .catch((e) => {
         setAuthError({

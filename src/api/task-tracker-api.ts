@@ -32,6 +32,14 @@ export const tasksApi = {
       }
     );
   },
+  getAllTasks() {
+    const token = localStorage.getItem("token");
+    return instance.get<{}, AxiosResponse<GetTasksResponseType>>(`/tasks`, {
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    });
+  },
   updateTask(data: UpdateTaskRequestType) {
     const token = localStorage.getItem("token");
     return instance.put<UpdateTaskRequestType, AxiosResponse<TaskObjType>>(
@@ -81,6 +89,17 @@ export const usersApi = {
   getAllUsers() {
     const token = localStorage.getItem("token");
     return instance.get<{}, AxiosResponse<GetUsersResponseType>>(`/users`, {
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    });
+  },
+  setRoleToUser(data: SetRoleRequestType) {
+    const token = localStorage.getItem("token");
+    return instance.post<
+      SetRoleRequestType,
+      AxiosResponse<GetUsersResponseType>
+    >("/users/role", data, {
       headers: {
         Authorization: "Bearer " + token,
       },
@@ -150,6 +169,10 @@ export type TaskObjType = {
   description: string;
   createdAt: string;
   updatedAt: string;
+  executor: {
+    id: number;
+    email: string;
+  };
 };
 
 //Users
@@ -158,4 +181,12 @@ export type UserType = {
   id: number;
   email: string;
   password: string;
+  roles: { id: number; value: RolesType }[];
+};
+
+export type RolesType = "ROLE_USER" | "ROLE_ADMIN";
+
+export type SetRoleRequestType = {
+  value: RolesType;
+  userId: number;
 };

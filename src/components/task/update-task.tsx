@@ -6,6 +6,7 @@ import { Button } from "../../components/button/button";
 import styled from "@emotion/styled";
 import { Slider, TextField } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import CloseIcon from "../../assets/icons/close-lg-svgrepo-com.svg";
 import { TaskType } from "../../types/common";
 import { getProgressColor, getTaskColor } from "../../helpers/helpers";
 import { TaskObjType } from "../../api/task-tracker-api";
@@ -18,12 +19,19 @@ const Card = styled.div<{ isActive: boolean }>((props) => ({
   left: "50%",
   transform: "translate(-50%, -50%)",
   flexDirection: "column",
+  gap: 20,
   width: 300,
   display: props.isActive ? "block" : "none",
-  img: {
-    height: 30,
-  },
 }));
+
+const CloseButton = styled.div({
+  position: "absolute",
+  top: 20,
+  right: 20,
+  img: {
+    height: 20,
+  },
+});
 
 type TaskPropsType = {
   task: TaskObjType;
@@ -31,6 +39,7 @@ type TaskPropsType = {
   title: "title" | "progress";
   value: string | number;
   handleUpdateTask: (value: string | number) => void;
+  handleCloseModal: () => void;
 };
 
 const UpdateTask: React.FC<TaskPropsType> = ({
@@ -39,6 +48,7 @@ const UpdateTask: React.FC<TaskPropsType> = ({
   title,
   value,
   handleUpdateTask,
+  handleCloseModal,
 }: TaskPropsType) => {
   const navigate = useNavigate();
   const [updatedValue, setUpdatedValue] = useState(value);
@@ -48,8 +58,11 @@ const UpdateTask: React.FC<TaskPropsType> = ({
   return (
     <Card isActive={isActive}>
       <H2>{title === "title" ? "Название" : "Прогресс"}</H2>
+      <CloseButton onClick={handleCloseModal}>
+        <img src={CloseIcon} />
+      </CloseButton>
       {title === "title" && (
-        <>
+        <div style={{ marginTop: 20 }}>
           <TextField
             label={"Email"}
             value={updatedValue}
@@ -57,7 +70,7 @@ const UpdateTask: React.FC<TaskPropsType> = ({
               setUpdatedValue(event.target.value);
             }}
           />
-        </>
+        </div>
       )}
       {title === "progress" && (
         <Slider

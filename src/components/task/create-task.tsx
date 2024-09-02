@@ -15,13 +15,8 @@ import {
 import { useNavigate } from "react-router-dom";
 import Flex from "../../components/flex/flex";
 import { ErrorType, TaskType } from "../../types/common";
-import {
-  getProgressColor,
-  getTaskColor,
-} from "../../helpers/helpers";
-import {
-  CreateTaskRequestType,
-} from "../../api/task-tracker-api";
+import { getProgressColor, getTaskColor } from "../../helpers/helpers";
+import { CreateTaskRequestType } from "../../api/task-tracker-api";
 import { useUsers } from "../../hooks/use-users";
 
 const Card = styled.div<{ isActive: boolean }>((props) => ({
@@ -46,44 +41,6 @@ const CloseButton = styled.div({
   position: "absolute",
   top: 20,
   right: 50,
-});
-const Type = styled.div<{ type: TaskType }>((props) => ({
-  width: "fit-content",
-  height: 30,
-  borderRadius: 10,
-  display: "flex",
-  alignItems: "center",
-  padding: 8,
-  boxSizing: "border-box",
-  backgroundColor: getTaskColor(props.type),
-}));
-const Executor = styled.div({
-  width: "20%",
-  height: 50,
-  borderRadius: 10,
-  display: "flex",
-  alignItems: "center",
-  padding: 10,
-  boxSizing: "border-box",
-});
-const Progress = styled.div<{ progress: number }>((props) => ({
-  width: "fit-content",
-  height: 30,
-  borderRadius: 10,
-  display: "flex",
-  alignItems: "center",
-  padding: 8,
-  boxSizing: "border-box",
-  backgroundColor: getProgressColor(props.progress),
-}));
-const Deadline = styled.div({
-  width: "20%",
-  height: 50,
-  borderRadius: 10,
-  display: "flex",
-  alignItems: "center",
-  padding: 10,
-  boxSizing: "border-box",
 });
 
 type TaskPropsType = {

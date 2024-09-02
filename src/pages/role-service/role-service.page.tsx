@@ -5,23 +5,16 @@ import { colors, mixins } from "../../css/shared";
 import { Button } from "../../components/button/button";
 import styled from "@emotion/styled";
 import { Page } from "../../components/styled/common";
-import RegisterIcon from "../../assets/icons/user-add-svgrepo-com.svg";
 import CloseIcon from "../../assets/icons/close-lg-svgrepo-com.svg";
-import { TextField } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../hooks/use-auth";
-import { validateEmail } from "../../helpers/helpers";
-import { ErrorType } from "../../types/common";
 import { ROUTES } from "../../routes";
 import { RolesType, usersApi } from "../../api/task-tracker-api";
 import { useUsers } from "../../hooks/use-users";
-import Flex from "../../components/flex/flex";
 
 const Card = styled.div((_) => ({
   ...mixins.card,
   position: "relative",
   flexDirection: "column",
-  marginTop: 100,
   gap: 30,
   width: 800,
   img: {

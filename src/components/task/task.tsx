@@ -97,7 +97,11 @@ const TaskModal: React.FC<TaskPropsType> = ({
     (value: string | number) => {
       if (selectedField === "progress" && Number(value) > task.progress) {
         handleUpdate({ id: task.id, progress: Number(value) });
-      } else if (selectedField === "title" && typeof value === "string") {
+      } else if (
+        selectedField === "title" &&
+        typeof value === "string" &&
+        task.title !== value
+      ) {
         handleUpdate({ id: task.id, title: value });
       }
       handleCloseTask();
@@ -197,6 +201,7 @@ const TaskModal: React.FC<TaskPropsType> = ({
           handleUpdateTask={handleUpdateTask}
           task={task}
           value={task[selectedField]}
+          handleCloseModal={() => setIsModalOpen(false)}
         />
       )}
     </Card>

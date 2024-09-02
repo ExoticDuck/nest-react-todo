@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { H2, H3, P1, P3 } from "../../components/styled/typography";
 
-import {  mixins } from "../../css/shared";
+import { mixins } from "../../css/shared";
 import { Button } from "../../components/button/button";
 import styled from "@emotion/styled";
 
@@ -79,7 +79,6 @@ type TaskPropsType = {
   handleUpdate: (data: UpdateTaskRequestType) => void;
 };
 
-
 const TaskModal: React.FC<TaskPropsType> = ({
   task,
   isActive,
@@ -96,7 +95,7 @@ const TaskModal: React.FC<TaskPropsType> = ({
   }, [selectedField]);
   const handleUpdateTask = useCallback(
     (value: string | number) => {
-      if (selectedField === "progress") {
+      if (selectedField === "progress" && Number(value) > task.progress) {
         handleUpdate({ id: task.id, progress: Number(value) });
       } else if (selectedField === "title" && typeof value === "string") {
         handleUpdate({ id: task.id, title: value });

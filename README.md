@@ -23,7 +23,8 @@
 }
 6) Установить пакеты в корневой папке и в папках api и client.
 7) Запускать командой npm run dev из корневой папки.
-9) !! Для работы необходима PostrgeSQL. 
+9) !! Для работы необходима PostrgeSQL.
+10) Swagger доступен по ссылке http://localhost:7000/api/docs#/
 
 
 # React + TypeScript + Vite

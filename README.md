@@ -1,3 +1,31 @@
+## Для запуска проекта необходимо:
+1) Создать папку под проект.
+2) Создать подпапку apps.
+3) В нее распаковать оба репозитория (api в папку api, front в папку client).
+4) В корневой папке создать package.json.
+5) {
+  "name": "test-app",
+  "devDependencies": {
+    "turbo": "^2.1.0"
+  },
+  "scripts": {
+    "dev": "turbo run dev"
+  },
+  "workspaces": [
+    "apps/*"
+  ],
+  "packageManager": "npm@10.8.1",
+  "dependencies": {
+    "@nestjs/swagger": "^7.4.0",
+    "cross-env": "^7.0.3",
+    "swagger-ui-express": "^5.0.1"
+  }
+}
+6) Установить пакеты в корневой папке и в папках api и client.
+7) Запускать командой npm run dev из корневой папки.
+9) !! Для работы необходима PostrgeSQL. 
+
+
 # React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
